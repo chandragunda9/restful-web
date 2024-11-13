@@ -1,15 +1,24 @@
 package com.learning.restful_web_services.entities;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 
+@Entity(name = "user_details")
 public class User {
-
+	
+	@Id
+	@GeneratedValue
 	Long id;
 
 	@Size(min = 2, message = "name atleast 2 chars")
@@ -19,6 +28,22 @@ public class User {
 	@Past(message = "birth date should be in past")
 	@JsonProperty("birth_date")
 	LocalDate dateOfBirth;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "user")
+	List<Post> posts;
+	
+	public List<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
+	}
+
+	public User() {
+		super();
+	}
 
 	public User(Long id, String name, LocalDate dateOfBirth) {
 		super();
