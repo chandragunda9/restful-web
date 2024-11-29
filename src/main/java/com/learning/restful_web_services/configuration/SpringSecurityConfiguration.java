@@ -12,7 +12,11 @@ public class SpringSecurityConfiguration {
 
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.authorizeHttpRequests(auth -> auth.anyRequest().authenticated());
+		http.authorizeHttpRequests(
+				auth -> auth
+				.requestMatchers("/").permitAll()
+				.anyRequest().authenticated()
+				);
 
 		http.httpBasic(withDefaults());
 
